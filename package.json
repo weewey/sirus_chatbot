@@ -1,11 +1,32 @@
 {
-  "name": "image_recog",
+  "name": "sirus",
   "version": "1.0.0",
-  "description": "Doing Image recoginition with BotBuilder",
+  "description": "chatbot for knowing calories",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "yewwee",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weewey/sirus_chatbot.git"
+  },
+  "keywords": [
+    "chatbot",
+    "calories",
+    "weight",
+    "loss"
+  ],
+  "author": "yew wee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weewey/sirus_chatbot/issues"
+  },
+  "homepage": "https://github.com/weewey/sirus_chatbot#readme",
+  "dependencies": {
+    "botbuilder": "^3.7.0",
+    "needle": "^1.6.0",
+    "restify": "^4.3.0",
+    "url": "^0.11.0",
+    "valid-url": "^1.0.9"
+  }
 }

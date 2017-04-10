@@ -3,9 +3,9 @@
 // the confidence score of the caption. For more info checkout the API documentation:
 // https://www.microsoft.com/cognitive-services/en-us/Computer-Vision-API/documentation/AnalyzeImage
 
-var request = require('request').defaults({ encoding: null });
+var request = require('request');
 
-var VISION_URL = 'https://api.projectoxford.ai/vision/v1.0/analyze/?visualFeatures=Description&form=BCSIMG&subscription-key=' + process.env.MICROSOFT_VISION_API_KEY;
+var FOODAI_CALL = 'http://api.foodai.org/v1/classify?num_tag=1&image_url=';
 
 /** 
  *  Gets the caption of the image from an image stream
@@ -16,12 +16,12 @@ exports.getCaptionFromStream = function (stream) {
     return new Promise(
         function (resolve, reject) {
             var requestData = {
-                url: VISION_URL,
-                encoding: 'binary',
-                headers: { 'content-type': 'application/octet-stream' }
+                url: FOODAI_CALL
             };
 
-            stream.pipe(request.post(requestData, function (error, response, body) {
+            console.log("Requesting from getCaptionFromStream" + requestData);
+
+            stream.pipe(request.get(requestData, function (error, response, body) {
                 if (error) {
                     reject(error);
                 }
@@ -44,12 +44,8 @@ exports.getCaptionFromStream = function (stream) {
 exports.getCaptionFromUrl = function (url) {
     return new Promise(
         function (resolve, reject) {
-            var requestData = {
-                url: VISION_URL,
-                json: { 'url': url }
-            };
-
-            request.post(requestData, function (error, response, body) {
+            var requestURL = FOODAI_CALL + url
+            request.get(requestURL, function (error, response, body) {
                 if (error) {
                     reject(error);
                 }
@@ -57,7 +53,7 @@ exports.getCaptionFromUrl = function (url) {
                     reject(body);
                 }
                 else {
-                    resolve(extractCaption(body));
+                    resolve(JSON.parse(body).tags);
                 }
             });
         }
@@ -69,10 +65,9 @@ exports.getCaptionFromUrl = function (url) {
  * @param {Object} body Response of the Vision API
  * @return {string} Description if caption found, null otherwise.
  */
-function extractCaption(body) {
-    if (body && body.description && body.description.captions && body.description.captions.length) {
-        return body.description.captions[0].text;
-    }
-
-    return null;
-}
+// function extractCaption(body) {
+//     // if (body && body.description && body.description.captions && body.description.captions.length) {
+//     //     return body.description.captions[0].text;
+//     // }
+//     return body;
+// }

@@ -3,7 +3,7 @@ An image caption bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
 
 // This loads the environment variables from the .env file
-require('dotenv-extended').load();
+// require('dotenv-extended').load();
 
 var builder = require('botbuilder'),
     needle = require('needle'),
@@ -40,6 +40,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             .catch(function (error) { handleErrorResponse(session, error); });
     } else {
         var imageUrl = parseAnchorTag(session.message.text) || (validUrl.isUri(session.message.text) ? session.message.text : null);
+        console.log('image URL is' + imageUrl);
         if (imageUrl) {
             captionService
                 .getCaptionFromUrl(imageUrl)
@@ -62,13 +63,16 @@ bot.on('conversationUpdate', function (message) {
             if (identity.id === message.address.bot.id) {
                 var reply = new builder.Message()
                     .address(message.address)
-                    .text('Hi! I am ImageCaption Bot. I can understand the content of any image and try to describe it as well as any human. Try sending me an image or an image URL.');
+                    .text('Hi! I am Sirus. I know the calories count of your food. Try sending me an image or an image URL.');
                 bot.send(reply);
             }
         });
     }
 });
 
+bot.on('ping', function(message){
+    bot.send('pong');
+})
 
 //=========================================================
 // Utilities
@@ -95,6 +99,7 @@ function getImageStreamFromMessage(message) {
     }
 
     headers['Content-Type'] = attachment.contentType;
+    console.log("attachment.contentUrl")
     return needle.get(attachment.contentUrl, { headers: headers });
 }
 
