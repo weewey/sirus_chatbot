@@ -1,0 +1,11 @@
+{
+  "name": "image_recog",
+  "version": "1.0.0",
+  "description": "Doing Image recoginition with BotBuilder",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yewwee",
+  "license": "ISC"
+}
