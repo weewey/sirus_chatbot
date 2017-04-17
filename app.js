@@ -22,7 +22,6 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-// Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
@@ -50,6 +49,12 @@ var bot = new builder.UniversalBot(connector, function (session) {
             session.send('Did you upload an image? I\'m more of a visual person. Try sending me an image or an image URL');
         }
     }
+
+
+
+
+
+
 });
 
 //=========================================================
@@ -69,10 +74,6 @@ bot.on('conversationUpdate', function (message) {
         });
     }
 });
-
-bot.on('ping', function(message){
-    bot.send('pong');
-})
 
 //=========================================================
 // Utilities
@@ -98,8 +99,9 @@ function getImageStreamFromMessage(message) {
         });
     }
 
-    headers['Content-Type'] = attachment.contentType;
-    console.log("attachment.contentUrl")
+    headers['Content-Type'] = "multipart/form-data";
+    console.log("headers" + headers['Content-Type']);
+    console.log("attachment.contentUrl" + attachment.contentUrl);
     return needle.get(attachment.contentUrl, { headers: headers });
 }
 
@@ -127,7 +129,7 @@ function parseAnchorTag(input) {
 //=========================================================
 function handleSuccessResponse(session, caption) {
     if (caption) {
-        session.send('I think it\'s ' + caption);
+        session.send('I think it\'s ' + caption[0][0]);
     }
     else {
         session.send('Couldn\'t find a caption for this one');
